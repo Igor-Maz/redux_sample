@@ -24,4 +24,4 @@ const mapStateToProps = state => {
   return { amount: state.amount }
 }
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
