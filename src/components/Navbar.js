@@ -22,6 +22,6 @@ const Navbar = ({ amount }) => {
 const mapStateToProps = state => {
   console.log('log z connectora Navbar', state);
   return { amount: state.amount }
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps)(Navbar);

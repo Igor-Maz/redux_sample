@@ -3,7 +3,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import CartContainer from "./components/CartContainer";
 // items
-import cartItems from "./cart-items";
+// import cartItems from "./cart-items";
 // redux stuff
 import store from './redux/store';
 import {Provider} from 'react-redux';
@@ -22,7 +22,7 @@ function App() {
   return (
     <Provider store={store}>
       <Navbar  />
-      <CartContainer cart={cartItems} />
+      <CartContainer />
     </Provider>
   );
 }
