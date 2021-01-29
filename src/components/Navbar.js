@@ -20,7 +20,6 @@ const Navbar = ({ amount }) => {
 };
 
 const mapStateToProps = state => {
-  console.log('log z connectora Navbar', state);
   return { amount: state.amount }
 };
 

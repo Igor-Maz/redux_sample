@@ -257,6 +257,9 @@ Cart Item
 .amount-btn:hover svg {
   fill: var(--clr-primary-light);
 }
+.amount-btn:disabled svg {
+  fill: var(--clr-primary-light);
+}
 .amount {
   text-align: center;
   margin-bottom: 0;

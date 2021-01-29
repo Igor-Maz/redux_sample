@@ -1,4 +1,4 @@
-import { DECREASE, INCREASE, CLEAR_CART, REMOVE, GET_TOTALS, TOGGLE_AMOUNT } from './actions';
+import { CLEAR_CART, REMOVE, GET_TOTALS, TOGGLE_AMOUNT } from './actions';
 import cartItems from "../cart-items";
 
 const initialStore = {
@@ -8,34 +8,22 @@ const initialStore = {
 };
 
 export const reducer = (state = initialStore, action) => {
-    console.log('log z reducera:', { state, action });
-    let tempCart = []
     switch (action.type) {
         case CLEAR_CART:
-            return { ...state, cart: [] };
+            return {
+                ...state, cart: state.cart.map((cartItem) => ({ ...cartItem, amount: 0, isActive: true }))
+            };
         case REMOVE:
-            console.log('remove action', action.payload.id);
-            return { ...state, cart: state.cart.filter((cartItem) => cartItem.id !== action.payload.id) }
-        case DECREASE:
-            console.log('decrease action');
-            tempCart = state.cart.map((cartItem) => {
-                if (cartItem.id === action.payload.id) {
-                    cartItem = { ...cartItem, amount: cartItem.amount - 1 }
-                };
-                return cartItem;
-            });
-            return { ...state, cart: tempCart }
-        case INCREASE:
-            console.log('increase action');
-            tempCart = state.cart.map((cartItem) => {
-                if (cartItem.id === action.payload.id) {
-                    cartItem = { ...cartItem, amount: cartItem.amount + 1 }
+            return {
+                ...state, cart: state.cart.map((cartItem) => {
+                    if (cartItem.id === action.payload.id) {
+                        return cartItem = { ...cartItem, amount: 0, isActive: true }
+                    }
+                    return cartItem
                 }
-                return cartItem;
-            })
-            return { ...state, cart: tempCart }
+                )
+            }
         case GET_TOTALS:
-            console.log('totals action')
             let { total, amount } = state.cart.reduce(
                 (cartTotal, cartItem) => {
                     const { price, amount } = cartItem;
@@ -54,10 +42,15 @@ export const reducer = (state = initialStore, action) => {
                 ...state, cart: state.cart.map(cartItem => {
                     if (cartItem.id === action.payload.id) {
                         if (action.payload.toggle === 'inc') {
-                            return cartItem = { ...cartItem, amount: cartItem.amount + 1 };
+                            return cartItem = { ...cartItem, amount: cartItem.amount + 1, isActive: false };
                         }
                         if (action.payload.toggle === 'dec') {
-                            return cartItem = { ...cartItem, amount: cartItem.amount - 1 };
+                            let tempItem = { ...cartItem, amount: cartItem.amount - 1 }
+                            if (tempItem.amount > 0) {
+                                return tempItem
+                            } else {
+                                return tempItem = { ...tempItem, isActive: true };
+                            }
                         }
                     }
                     return cartItem
