@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from 'react-redux';
-import { TOGGLE_AMOUNT, removeItem } from '../redux/actions'
+import { TOGGLE_AMOUNT, removeItem, addBulk } from '../redux/actions'
 
 
-const CartItem = ({ img, title, price, amount, remove, toggle, isActive }) => {
+const CartItem = ({ img, title, price, amount, remove, toggle, isActive, addBulk }) => {
+
+  const [bulk, setBulk] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (bulk > 0) {
+      addBulk(bulk);
+      setBulk('')
+    } else {
+      alert('bulk amount must be grater than 0')
+      setBulk('')
+    }
+  }
 
   return (
     <div className="cart-item">
@@ -30,6 +43,19 @@ const CartItem = ({ img, title, price, amount, remove, toggle, isActive }) => {
           </svg>
         </button>
       </div>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <input
+            value={bulk}
+            type='number'
+            id='bulk'
+            name='bulk'
+            placeholder='bulk'
+            onChange={(e) => setBulk(e.target.value)}
+          />
+          <button type='submit'>Add</button>
+        </form>
+      </div>
     </div>
   );
 };
@@ -39,7 +65,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
   return {
     remove: () => dispatch(removeItem(id)),
-    toggle: (toggle) => dispatch({ type: TOGGLE_AMOUNT, payload: { id, toggle } })
+    toggle: (toggle) => dispatch({ type: TOGGLE_AMOUNT, payload: { id, toggle } }),
+    addBulk: (bulk) => dispatch(addBulk(id, bulk))
   }
 }
 

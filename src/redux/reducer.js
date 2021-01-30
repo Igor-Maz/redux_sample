@@ -1,4 +1,4 @@
-import { CLEAR_CART, REMOVE, GET_TOTALS, TOGGLE_AMOUNT } from './actions';
+import { CLEAR_CART, REMOVE, GET_TOTALS, TOGGLE_AMOUNT, ADD_BULK } from './actions';
 import cartItems from "../cart-items";
 
 const initialStore = {
@@ -56,6 +56,14 @@ export const reducer = (state = initialStore, action) => {
                     return cartItem
                 })
             }
+            case ADD_BULK:
+                let tempCart = state.cart.map((cartItem) => {
+                    if (cartItem.id === action.payload.id) {
+                        cartItem = { ...cartItem, amount: cartItem.amount + parseInt(action.payload.bulk) }
+                    }
+                    return cartItem;
+                })
+                return { ...state, cart: tempCart }
         default:
             return state;
     }
